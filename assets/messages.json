@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "subject": "Willkommen bei unserer App!",
+    "content": "Wir freuen uns, dass du unsere App nutzt. Hier sind einige Tipps, um loszulegen...",
+    "timestamp": "2024-07-12",
+    "read": false,
+    "conditions": { "level": 1, "days": 0 }
+  },
+  {
+    "id": 2,
+    "subject": "Glückwunsch zum Level-Up!",
+    "content": "Herzlichen Glückwunsch! Du hast ein neues Level erreicht. Weiter so!",
+    "timestamp": "2024-07-13",
+    "read": false,
+    "conditions": { "level": 2, "days": 0 }
+  }
+]

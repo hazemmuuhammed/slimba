@@ -1,35 +1,54 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+import { DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
+import { Asset } from 'expo-asset';
+import theme from '@/hooks/theme';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  const [isAppReady, setAppReady] = useState(false);
   const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    'Fredoka-Regular': require('../assets/fonts/Fredoka-Regular.ttf'),
+    'Fredoka-SemiBold': require('../assets/fonts/Fredoka-SemiBold.ttf'),
+    'Fredoka-Bold': require('../assets/fonts/Fredoka-Bold.ttf'),
   });
 
   useEffect(() => {
-    if (loaded) {
+    const loadAssets = async () => {
+      // Lade die Fonts und setze die App bereit
+      setAppReady(true);
       SplashScreen.hideAsync();
-    }
-  }, [loaded]);
 
-  if (!loaded) {
+      // Lade das Lion-Modell im Hintergrund
+      await Asset.loadAsync([require('../assets/models/Lion.glb')]);
+    };
+
+    loadAssets();
+  }, []);
+
+  if (!loaded || !isAppReady) {
     return null;
   }
 
+  const NavigationTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: theme.colors.white,
+      text: theme.colors.black,
+    },
+  };
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+    <ThemeProvider value={NavigationTheme}>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="screens/dashboard" />
         <Stack.Screen name="+not-found" />
       </Stack>
     </ThemeProvider>
