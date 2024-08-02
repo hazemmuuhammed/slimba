@@ -15,7 +15,7 @@ import { Asset } from "expo-asset";
 import theme from "@/hooks/theme";
 import IndexScreen from "./index";
 import MainDrawerNavigator from "./screens/drawerNavigator";
-import OnboardingLayout from "./onboarding/_layout";
+// import OnboardingLayout from "./onboarding/_layout";
 import CalorieCalculator from "./screens/calorieCalculator/calorieCalculator";
 import LoadingScreen from "./onboarding/LoadingScreen";
 import OnboardingScreen1 from "./onboarding/OnboardingScreen1";
@@ -75,11 +75,11 @@ const RootLayout: React.FC = () => {
   };
 
   return (
-    <NavigationContainer independent={true} theme={NavigationTheme}>
+    <NavigationContainer theme={NavigationTheme}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Index" component={IndexScreen} />
         <Stack.Screen name="Main" component={MainDrawerNavigator} />
-        <Stack.Screen name="Onboarding" component={OnboardingLayout} />
+        {/* <Stack.Screen name="Onboarding" component={OnboardingLayout} /> */}
         <Stack.Screen name="Challenges" component={ChallengesScreen} />
         <Stack.Screen name="CalorieCalculator" component={CalorieCalculator} />
         <Stack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />

@@ -15,7 +15,7 @@ import { Asset } from "expo-asset";
 import theme from "@/hooks/theme";
 import IndexScreen from "./index";
 import MainDrawerNavigator from "./screens/drawerNavigator";
-import OnboardingLayout from "./onboarding/_layout";
+// import OnboardingLayout from "./onboarding/_layout";
 import CalorieCalculator from "./screens/calorieCalculator/calorieCalculator";
 import LoadingScreen from "./onboarding/LoadingScreen";
 import OnboardingScreen1 from "./onboarding/OnboardingScreen1";
@@ -25,6 +25,7 @@ import OnboardingScreen4 from "./onboarding/OnboardingScreen4";
 import OnboardingScreen5 from "./onboarding/OnboardingScreen5";
 import OnboardingScreen6 from "./onboarding/OnboardingScreen6";
 import ChallengesScreen from "./screens/challenges/Challenges";
+import InboxScreen from "./screens/InboxScreen";
 
 export type RootStackParamList = {
   Index: undefined;
@@ -39,6 +40,7 @@ export type RootStackParamList = {
   OnboardingScreen6: undefined;
   Challenges: undefined;
   LoadingScreen: undefined;
+  Inbox: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -79,8 +81,8 @@ const RootLayout: React.FC = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Index" component={IndexScreen} />
         <Stack.Screen name="Main" component={MainDrawerNavigator} />
-        <Stack.Screen name="Onboarding" component={OnboardingLayout} />
         <Stack.Screen name="Challenges" component={ChallengesScreen} />
+        <Stack.Screen name="Inbox" component={InboxScreen} />
         <Stack.Screen name="CalorieCalculator" component={CalorieCalculator} />
         <Stack.Screen name="OnboardingScreen1" component={OnboardingScreen1} />
         <Stack.Screen name="OnboardingScreen2" component={OnboardingScreen2} />

@@ -18,7 +18,7 @@ interface HeaderProps {
   navigation: DrawerNavigationProp<RootDrawerParamList>;
 }
 
-const Header: React.FC<HeaderProps> = ({ navigation }) => {
+const Header: React.FC<HeaderProps> = ({ navigation }: any) => {
   const level = useStore((state) => state.level);
   const loadDay = useStore((state) => state.loadDay);
   const currentDate = useStore((state) => state.currentDate);
@@ -68,7 +68,10 @@ const Header: React.FC<HeaderProps> = ({ navigation }) => {
               color={theme.colors.primaryGreen100}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.inboxIconContainer}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Inbox")}
+            style={styles.inboxIconContainer}
+          >
             <Ionicons
               name="mail-outline"
               size={24}

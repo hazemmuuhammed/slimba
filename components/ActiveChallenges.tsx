@@ -18,7 +18,7 @@ const ActiveChallenges: React.FC<ActiveChallengesProps> = ({
 
   const handleDiscoverButtonPress = () => {
     onClose();
-    navigation.navigate("Discover");
+    navigation.navigate("Challenges"); // FIXME: replace with the challenges route
   };
 
   return (

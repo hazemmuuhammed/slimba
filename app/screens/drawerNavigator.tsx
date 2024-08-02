@@ -4,12 +4,12 @@ import {
   createDrawerNavigator,
   DrawerNavigationProp,
 } from "@react-navigation/drawer";
-import { DefaultTheme, Theme } from "@react-navigation/native";
+import { DefaultTheme, DrawerActions, Theme } from "@react-navigation/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDrawerContent from "@/components/navigation/CustomDrawerContent";
 import theme from "@/hooks/theme";
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import DashboardScreen from "./dashboard/dashboard";
 import ChallengesScreen from "./challenges/Challenges";
 import CalorieCalculatorScreen from "./calorieCalculator/calorieCalculator";
@@ -19,7 +19,7 @@ import CalorieOverviewScreen from "./calorieOverview/CalorieOverview";
 import EvaluationScreen from "./evaluation";
 import LevelScreen from "./Level";
 import SettingsScreen from "./settings";
-import { TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export type RootDrawerParamList = {
   dashboard: undefined;
@@ -42,6 +42,8 @@ const MainDrawerNavigator: React.FC = () => {
       text: theme.colors.black,
     },
   };
+
+  const navigation = useNavigation<any>();
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -67,7 +69,10 @@ const MainDrawerNavigator: React.FC = () => {
             fontSize: 18,
           },
           headerLeft: () => (
-            <TouchableOpacity style={styles.menuButton}>
+            <TouchableOpacity
+              style={styles.menuButton}
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}
+            >
               <Ionicons
                 name="menu"
                 size={24}
@@ -76,7 +81,10 @@ const MainDrawerNavigator: React.FC = () => {
             </TouchableOpacity>
           ),
           headerRight: () => (
-            <TouchableOpacity style={styles.closeButton}>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+            >
               <Ionicons
                 name="close"
                 size={24}

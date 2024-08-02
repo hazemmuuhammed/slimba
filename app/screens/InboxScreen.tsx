@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, FlatList, TouchableOpacity, Modal } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useMessages, Message } from '../utility/useMessages';
-import theme from '../../hooks/theme';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useMessages, Message } from "../utility/useMessages";
+import theme from "../../hooks/theme";
 
 const InboxScreen: React.FC = () => {
   const { messages, markMessageAsRead } = useMessages();
@@ -19,13 +26,15 @@ const InboxScreen: React.FC = () => {
     <TouchableOpacity
       style={[
         styles.messageContainer,
-        item.read ? styles.readMessage : styles.unreadMessage
+        item.read ? styles.readMessage : styles.unreadMessage,
       ]}
       onPress={() => handlePress(item)}
     >
       <Text style={styles.messageSubject}>{item.subject}</Text>
       <Text style={styles.messageSender}>Slimba</Text>
-      <Text style={styles.messageTimestamp}>{new Date(item.timestamp).toLocaleDateString()}</Text>
+      <Text style={styles.messageTimestamp}>
+        {new Date(item.timestamp).toLocaleDateString()}
+      </Text>
     </TouchableOpacity>
   );
 
@@ -47,9 +56,16 @@ const InboxScreen: React.FC = () => {
             <View style={styles.modalContent}>
               <Text style={styles.modalSubject}>{selectedMessage.subject}</Text>
               <Text style={styles.modalSender}>Slimba</Text>
-              <Text style={styles.modalTimestamp}>{new Date(selectedMessage.timestamp).toLocaleDateString()}</Text>
-              <Text style={styles.modalContentText}>{selectedMessage.content}</Text>
-              <TouchableOpacity style={styles.closeButton} onPress={() => setSelectedMessage(null)}>
+              <Text style={styles.modalTimestamp}>
+                {new Date(selectedMessage.timestamp).toLocaleDateString()}
+              </Text>
+              <Text style={styles.modalContentText}>
+                {selectedMessage.content}
+              </Text>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setSelectedMessage(null)}
+              >
                 <Text style={styles.closeButtonText}>Schließen</Text>
               </TouchableOpacity>
             </View>
@@ -68,7 +84,7 @@ const styles = StyleSheet.create({
   messageContainer: {
     padding: 16,
     borderRadius: 10,
-    margin: 8,
+    margin: 15,
     backgroundColor: theme.colors.white,
   },
   unreadMessage: {
@@ -94,19 +110,19 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    width: '80%',
+    width: "80%",
     padding: 20,
     backgroundColor: theme.colors.white,
     borderRadius: 10,
   },
   modalSubject: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   modalSender: {
@@ -124,7 +140,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   closeButton: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     padding: 10,
     backgroundColor: theme.colors.primaryGreen100,
     borderRadius: 5,
