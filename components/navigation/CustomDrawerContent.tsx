@@ -6,13 +6,11 @@ import {
 } from "@react-navigation/drawer";
 import { View, Text, StyleSheet, Image } from "react-native";
 import theme from "@/hooks/theme";
-import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useStore from "../store";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function CustomDrawerContent(props: any) {
-  const router = useRouter();
   const { top, bottom } = useSafeAreaInsets();
   const level = useStore((state) => state.level);
   const displayName = useStore((state) => state.userInfo.displayName);

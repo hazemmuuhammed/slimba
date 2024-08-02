@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, View, ScrollView, TouchableOpacity, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { fetchChatGPTResponse } from './../utility/api';
-import theme from '../../hooks/theme';
-import useChatStore, { Message } from '../../components/chatStore'; // Importiere den Zustand Store
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { fetchChatGPTResponse } from "../../utility/api";
+import theme from "../../../hooks/theme";
+import useChatStore, { Message } from "./components/chatStore"; // Importiere den Zustand Store
 
-export default function App() {
+export default function CalorieCalculator() {
   const messages = useChatStore((state) => state.messages);
   const addMessage = useChatStore((state) => state.addMessage);
-  const [inputText, setInputText] = useState<string>('');
+  const [inputText, setInputText] = useState<string>("");
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
 
   const sendMessage = async () => {
     if (inputText.trim()) {
-      const userMessage: Message = { role: 'user', content: inputText };
+      const userMessage: Message = { role: "user", content: inputText };
       addMessage(userMessage); // Speichere die Nachricht im Zustand
 
       const responseMessage = await fetchChatGPTResponse(inputText);
-      const botMessage: Message = { role: 'assistant', content: responseMessage };
+      const botMessage: Message = {
+        role: "assistant",
+        content: responseMessage,
+      };
       addMessage(botMessage); // Speichere die Antwort im Zustand
-      setInputText('');
+      setInputText("");
     }
   };
 
@@ -27,22 +40,25 @@ export default function App() {
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         keyboardVerticalOffset={Platform.select({ ios: 0, android: 500 })}
       >
         <View style={styles.chatContainer}>
-          <ScrollView style={styles.messagesContainer} contentContainerStyle={styles.scrollContentContainer}>
+          <ScrollView
+            style={styles.messagesContainer}
+            contentContainerStyle={styles.scrollContentContainer}
+          >
             {messages.map((message, index) => (
               <View
                 key={index}
                 style={[
                   styles.messageContainer,
-                  message.role === 'user' ? styles.userMessageContainer : styles.botMessageContainer
+                  message.role === "user"
+                    ? styles.userMessageContainer
+                    : styles.botMessageContainer,
                 ]}
               >
-                <Text style={styles.messageText}>
-                  {message.content}
-                </Text>
+                <Text style={styles.messageText}>{message.content}</Text>
               </View>
             ))}
           </ScrollView>
@@ -58,11 +74,19 @@ export default function App() {
               onBlur={() => setIsInputFocused(false)}
             />
             <TouchableOpacity onPress={sendMessage}>
-              <Ionicons name="send" size={30} color={theme.colors.primaryGreen100} style={styles.icon} />
+              <Ionicons
+                name="send"
+                size={30}
+                color={theme.colors.primaryGreen100}
+                style={styles.icon}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.hintContainer}>
-            <Text style={styles.hintText}>z.B. Silser Käse Sandwich, eine grosse Pizza Prosciutto, ein Chicken Bowl mit Sauce, ein Döner mit Cocktailsauce.</Text>
+            <Text style={styles.hintText}>
+              z.B. Silser Käse Sandwich, eine grosse Pizza Prosciutto, ein
+              Chicken Bowl mit Sauce, ein Döner mit Cocktailsauce.
+            </Text>
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -89,7 +113,7 @@ const styles = StyleSheet.create({
   },
   scrollContentContainer: {
     flexGrow: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
   messageContainer: {
     marginVertical: 5,
@@ -103,14 +127,14 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   userMessageContainer: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     backgroundColor: theme.colors.white,
-    marginLeft: 20
+    marginLeft: 20,
   },
   botMessageContainer: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     backgroundColor: theme.colors.primaryGreen20,
-    marginRight: 20
+    marginRight: 20,
   },
   messageText: {
     fontFamily: theme.fonts.regular,
@@ -118,7 +142,7 @@ const styles = StyleSheet.create({
   },
   inputHintContainer: {
     backgroundColor: theme.colors.white,
-    width: '100%',
+    width: "100%",
     paddingHorizontal: 10,
     paddingBottom: 10,
   },
@@ -132,8 +156,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
     backgroundColor: theme.colors.white,
   },
@@ -150,7 +174,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 4,
-    elevation: 4
+    elevation: 4,
   },
   inputFocused: {
     borderColor: theme.colors.primaryGreen100,

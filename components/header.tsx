@@ -10,20 +10,19 @@ import {
 import useStore from "./store";
 import theme from "../hooks/theme";
 import ProgressBar from "./ProgressBar";
-import {
-  useNavigation,
-  NavigationProp,
-  ParamListBase,
-} from "@react-navigation/native";
-import { DrawerActions } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
+import { RootDrawerParamList } from "../app/screens/drawerNavigator"; // Adjust the import path accordingly
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  navigation: DrawerNavigationProp<RootDrawerParamList>;
+}
+
+const Header: React.FC<HeaderProps> = ({ navigation }) => {
   const level = useStore((state) => state.level);
   const loadDay = useStore((state) => state.loadDay);
   const currentDate = useStore((state) => state.currentDate);
   const messages = useStore((state) => state.messages);
-  const navigation = useNavigation<NavigationProp<ParamListBase>>();
 
   const [dates, setDates] = useState<string[]>([]);
   const unreadMessagesCount = messages.filter((msg) => !msg.read).length;
@@ -58,33 +57,18 @@ const Header: React.FC = () => {
     }
   };
 
-  const handleMenuPress = () => {
-    navigation.dispatch(DrawerActions.openDrawer());
-  };
-
-  const handleLevelPress = () => {
-    navigation.navigate("Level"); // Make sure 'Level' is the correct route name for your Level screen
-  };
-
-  const handleInboxPress = () => {
-    navigation.navigate("InboxScreen"); // Make sure 'Inbox' is the correct route name for your Inbox screen
-  };
-
   return (
     <>
       <View style={styles.headerContainer}>
         <View style={styles.leftIcons}>
-          <TouchableOpacity onPress={handleMenuPress}>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Ionicons
               name="menu"
               size={24}
               color={theme.colors.primaryGreen100}
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={handleInboxPress}
-            style={styles.inboxIconContainer}
-          >
+          <TouchableOpacity style={styles.inboxIconContainer}>
             <Ionicons
               name="mail-outline"
               size={24}
@@ -136,15 +120,13 @@ const Header: React.FC = () => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={handleLevelPress}>
-          <View style={styles.starContainer}>
-            <Image
-              source={require("../assets/icons/star.png")}
-              style={styles.starIcon}
-            />
-            <Text style={styles.levelText}>{level}</Text>
-          </View>
-        </TouchableOpacity>
+        <View style={styles.starContainer}>
+          <Image
+            source={require("../assets/icons/star.png")}
+            style={styles.starIcon}
+          />
+          <Text style={styles.levelText}>{level}</Text>
+        </View>
       </View>
       <ProgressBar />
     </>
@@ -183,10 +165,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
     color: theme.colors.black,
     textAlign: "center",
-  },
-  iconContainer: {
-    flexDirection: "row",
-    alignItems: "center",
   },
   inboxIconContainer: {
     marginLeft: 16,

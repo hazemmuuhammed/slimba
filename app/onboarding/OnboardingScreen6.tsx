@@ -1,20 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import theme from '../../hooks/theme';
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import theme from "../../hooks/theme";
 
 export default function OnboardingScreen6() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const handleNext = () => {
-    router.push('/screens/dashboard');
+    navigation.navigate("Main");
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../assets/images/avatar.png')}
+          source={require("../../assets/images/avatar.png")}
           style={styles.image}
           resizeMode="contain"
         />
@@ -40,12 +40,12 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 4.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   contentContainer: {
     flex: 5,
@@ -53,8 +53,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
@@ -65,9 +65,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 0.9,
     backgroundColor: theme.colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -77,10 +77,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 30,
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
@@ -88,8 +88,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 100,
     height: 60,
     borderRadius: 30,

@@ -1,6 +1,6 @@
 // DavatarWrapper.tsx
-import React, { useEffect, useState } from 'react';
-import Davatar from './davatar';
+import React, { useEffect, useState } from "react";
+import Davatar from "../app/screens/dashboard/components/davatar";
 
 const DavatarWrapper = ({ onLoad }: { onLoad: () => void }) => {
   useEffect(() => {

@@ -1,21 +1,24 @@
-import React from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import useStore from './store';
-import theme from '../hooks/theme';
+import React from "react";
+import { View, Text, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import useStore from "./store";
+import theme from "../hooks/theme";
 
 interface ActiveChallengesProps {
   visible: boolean;
   onClose: () => void;
 }
 
-const ActiveChallenges: React.FC<ActiveChallengesProps> = ({ visible, onClose }) => {
+const ActiveChallenges: React.FC<ActiveChallengesProps> = ({
+  visible,
+  onClose,
+}) => {
   const activeChallenge = useStore((state) => state.activeChallenge);
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const handleDiscoverButtonPress = () => {
     onClose();
-    router.push('/screens/Challenges');
+    navigation.navigate("Discover");
   };
 
   return (
@@ -25,20 +28,42 @@ const ActiveChallenges: React.FC<ActiveChallengesProps> = ({ visible, onClose })
       visible={visible}
       onRequestClose={onClose}
     >
-      <TouchableOpacity style={styles.overlay} onPress={onClose} activeOpacity={1}>
-        <View style={styles.modalContainer} onTouchEnd={(e) => e.stopPropagation()}>
+      <TouchableOpacity
+        style={styles.overlay}
+        onPress={onClose}
+        activeOpacity={1}
+      >
+        <View
+          style={styles.modalContainer}
+          onTouchEnd={(e) => e.stopPropagation()}
+        >
           <Text style={styles.title}>Aktive Challenges</Text>
           {activeChallenge ? (
             <View style={styles.activeChallengeContainer}>
-              <Text style={styles.activeChallengeTitle}>{activeChallenge.name}</Text>
-              <Text style={styles.activeChallengeDescription}>{activeChallenge.description}</Text>
-              <Text style={styles.activeChallengePoints}>{`Punkte: ${activeChallenge.points}`}</Text>
-              <Text style={styles.activeChallengeDuration}>{`Tage verbleibend: ${activeChallenge.duration - useStore.getState().challengeProgress}`}</Text>
+              <Text style={styles.activeChallengeTitle}>
+                {activeChallenge.name}
+              </Text>
+              <Text style={styles.activeChallengeDescription}>
+                {activeChallenge.description}
+              </Text>
+              <Text
+                style={styles.activeChallengePoints}
+              >{`Punkte: ${activeChallenge.points}`}</Text>
+              <Text
+                style={styles.activeChallengeDuration}
+              >{`Tage verbleibend: ${
+                activeChallenge.duration - useStore.getState().challengeProgress
+              }`}</Text>
             </View>
           ) : (
-            <Text style={styles.noActiveChallengeText}>Derzeit keine aktive Challenge</Text>
+            <Text style={styles.noActiveChallengeText}>
+              Derzeit keine aktive Challenge
+            </Text>
           )}
-          <TouchableOpacity style={styles.discoverButton} onPress={handleDiscoverButtonPress}>
+          <TouchableOpacity
+            style={styles.discoverButton}
+            onPress={handleDiscoverButtonPress}
+          >
             <Text style={styles.discoverButtonText}>Challenges entdecken</Text>
           </TouchableOpacity>
         </View>
@@ -50,18 +75,18 @@ const ActiveChallenges: React.FC<ActiveChallengesProps> = ({ visible, onClose })
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalContainer: {
-    width: '90%',
+    width: "90%",
     backgroundColor: theme.colors.white,
     borderRadius: 20,
     borderWidth: 2,
     borderColor: theme.colors.secondaryBeige100,
     padding: 16,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
@@ -70,7 +95,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   activeChallengeContainer: {
-    width: '100%',
+    width: "100%",
     padding: 16,
     borderRadius: 10,
     backgroundColor: theme.colors.secondaryBeige20,
@@ -109,8 +134,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 20,
     backgroundColor: theme.colors.primaryGreen100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   discoverButtonText: {
     fontSize: 18,

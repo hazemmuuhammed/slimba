@@ -1,27 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Platform, Alert, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import useStore from '../../components/store';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import RNPickerSelect from 'react-native-picker-select';
-import theme from '../../hooks/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Platform,
+  Alert,
+  Animated,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import useStore from "../../components/store";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import RNPickerSelect from "react-native-picker-select";
+import theme from "../../hooks/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 const genders = [
-  { label: 'Männlich', value: 'male' },
-  { label: 'Weiblich', value: 'female' },
+  { label: "Männlich", value: "male" },
+  { label: "Weiblich", value: "female" },
 ];
 
 export default function OnboardingScreen2() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const userInfo = useStore((state) => state.userInfo);
   const setUserInfo = useStore((state) => state.setUserInfo);
 
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [gender, setGender] = useState<'male' | 'female'>('female');
+  const [weight, setWeight] = useState("");
+  const [height, setHeight] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [gender, setGender] = useState<"male" | "female">("female");
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
   const [activeInput, setActiveInput] = useState<string | null>(null);
@@ -42,32 +53,43 @@ export default function OnboardingScreen2() {
     if (isFormValid) {
       const newWeight = parseFloat(weight);
       const newHeight = parseFloat(height);
-      const birthYear = parseInt(birthday.split('.')[2], 10);
+      const birthYear = parseInt(birthday.split(".")[2], 10);
 
       if (isNaN(newWeight) || isNaN(newHeight)) {
-        Alert.alert('Fehler', 'Bitte gebe gültige numerische Werte für Gewicht und Größe ein.');
+        Alert.alert(
+          "Fehler",
+          "Bitte gebe gültige numerische Werte für Gewicht und Größe ein."
+        );
         return;
       }
 
       if (newWeight < 30 || newWeight > 350) {
-        Alert.alert('Fehler', 'Gewicht muss zwischen 30 und 350 kg liegen.');
+        Alert.alert("Fehler", "Gewicht muss zwischen 30 und 350 kg liegen.");
         return;
       }
 
       if (newHeight < 120 || newHeight > 250) {
-        Alert.alert('Fehler', 'Größe muss zwischen 120 und 250 cm liegen.');
+        Alert.alert("Fehler", "Größe muss zwischen 120 und 250 cm liegen.");
         return;
       }
 
       if (birthYear < 1900) {
-        Alert.alert('Fehler', 'Geburtsjahr muss nach 1900 liegen.');
+        Alert.alert("Fehler", "Geburtsjahr muss nach 1900 liegen.");
         return;
       }
 
-      setUserInfo(userInfo.displayName, newWeight, newHeight, birthday, userInfo.activityLevel, userInfo.goal, gender);
-      router.push('/onboarding/OnboardingScreen3');
+      setUserInfo(
+        userInfo.displayName,
+        newWeight,
+        newHeight,
+        birthday,
+        userInfo.activityLevel,
+        userInfo.goal,
+        gender
+      );
+      navigation.navigate("OnboardingScreen3");
     } else {
-      Alert.alert('Fehler', 'Bitte füllen Sie alle Felder aus.');
+      Alert.alert("Fehler", "Bitte füllen Sie alle Felder aus.");
     }
   };
 
@@ -80,7 +102,11 @@ export default function OnboardingScreen2() {
   };
 
   const handleConfirm = (date: Date) => {
-    const formattedDate = `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+    const formattedDate = `${date.getDate().toString().padStart(2, "0")}.${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, "0")}.${date.getFullYear()}`;
     setBirthday(formattedDate);
     hideDatePicker();
   };
@@ -104,38 +130,55 @@ export default function OnboardingScreen2() {
             <View style={styles.progressDot} />
           </View>
         </View>
-        <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
           <View style={styles.contentContainer}>
             <Text style={styles.text}>
-              <Text style={styles.text}>Cool! Freut mich dich kennenzulernen</Text> <Text style={styles.boldText}>{userInfo.displayName}</Text>!
+              <Text style={styles.text}>
+                Cool! Freut mich dich kennenzulernen
+              </Text>{" "}
+              <Text style={styles.boldText}>{userInfo.displayName}</Text>!
             </Text>
             <Text style={styles.text}>
-              Um dir <Text style={styles.boldText}>maßgeschneiderte Empfehlungen</Text> geben zu können, brauche ich noch ein paar <Text style={styles.boldText}>persönliche Infos</Text> von dir.
+              Um dir{" "}
+              <Text style={styles.boldText}>maßgeschneiderte Empfehlungen</Text>{" "}
+              geben zu können, brauche ich noch ein paar{" "}
+              <Text style={styles.boldText}>persönliche Infos</Text> von dir.
             </Text>
             <View style={styles.separator} />
             <Text style={styles.label}>Wie viel wiegst du aktuell?</Text>
             <TextInput
-              style={[styles.input, activeInput === 'weight' && styles.activeInput]}
+              style={[
+                styles.input,
+                activeInput === "weight" && styles.activeInput,
+              ]}
               placeholder="(kg)"
               value={weight}
               onChangeText={setWeight}
-              keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-              onFocus={() => handleFocus('weight')}
+              keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+              onFocus={() => handleFocus("weight")}
               onBlur={handleBlur}
             />
             <Text style={styles.label}>Wie groß bist du?</Text>
             <TextInput
-              style={[styles.input, activeInput === 'height' && styles.activeInput]}
+              style={[
+                styles.input,
+                activeInput === "height" && styles.activeInput,
+              ]}
               placeholder="(cm)"
               value={height}
               onChangeText={setHeight}
-              keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-              onFocus={() => handleFocus('height')}
+              keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+              onFocus={() => handleFocus("height")}
               onBlur={handleBlur}
             />
             <Text style={styles.label}>Wann hast du Geburtstag?</Text>
             <TouchableOpacity onPress={showDatePicker}>
-              <Text style={[styles.input, !birthday && styles.placeholderText]}>{birthday || 'dd.mm.jjjj'}</Text>
+              <Text style={[styles.input, !birthday && styles.placeholderText]}>
+                {birthday || "dd.mm.jjjj"}
+              </Text>
             </TouchableOpacity>
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
@@ -144,22 +187,41 @@ export default function OnboardingScreen2() {
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
             />
-            <Text style={styles.label}>Mit welchem Geschlecht wurdest du geboren?</Text>
+            <Text style={styles.label}>
+              Mit welchem Geschlecht wurdest du geboren?
+            </Text>
             <RNPickerSelect
-              onValueChange={(value) => setGender(value as 'female' | 'male')}
+              onValueChange={(value) => setGender(value as "female" | "male")}
               items={genders}
               value={gender}
               style={pickerSelectStyles}
               placeholder={{ label: "Bitte Geschlecht auswählen", value: null }}
             />
             <View style={styles.separator} />
-            <Text style={styles.text}>Keine Sorge, <Text style={styles.boldText}>deine Individualität </Text>steht bei mir an erster Stelle und ich respektiere sie voll und ganz!</Text>
+            <Text style={styles.text}>
+              Keine Sorge,{" "}
+              <Text style={styles.boldText}>deine Individualität </Text>steht
+              bei mir an erster Stelle und ich respektiere sie voll und ganz!
+            </Text>
           </View>
         </ScrollView>
         <View style={styles.footerContainer}>
           <View style={styles.buttonBackground}>
-            <TouchableOpacity style={[styles.addButton, !isFormValid && { backgroundColor: theme.colors.primaryGreen20 }]} onPress={handleNext} disabled={!isFormValid}>
-              <Ionicons name="arrow-forward" size={24} color={theme.colors.white} />
+            <TouchableOpacity
+              style={[
+                styles.addButton,
+                !isFormValid && {
+                  backgroundColor: theme.colors.primaryGreen20,
+                },
+              ]}
+              onPress={handleNext}
+              disabled={!isFormValid}
+            >
+              <Ionicons
+                name="arrow-forward"
+                size={24}
+                color={theme.colors.white}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -168,7 +230,7 @@ export default function OnboardingScreen2() {
   );
 }
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   safeArea: {
@@ -180,15 +242,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.secondaryBeige20,
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
     backgroundColor: theme.colors.white,
   },
   progressContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   progressDot: {
     width: 10,
@@ -234,7 +296,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderColor: theme.colors.secondaryBeige100,
     borderWidth: 1,
@@ -260,11 +322,11 @@ const styles = StyleSheet.create({
     color: theme.colors.grey,
   },
   footerContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -274,10 +336,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 0,
     right: 0,
     marginBottom: 0,
@@ -288,8 +350,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 60,
     height: 60,
     borderRadius: 30,
@@ -302,7 +364,7 @@ const styles = StyleSheet.create({
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderColor: theme.colors.secondaryBeige100,
     borderWidth: 1,
@@ -319,7 +381,7 @@ const pickerSelectStyles = StyleSheet.create({
     elevation: 4,
   },
   inputAndroid: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderColor: theme.colors.secondaryBeige100,
     borderWidth: 1,

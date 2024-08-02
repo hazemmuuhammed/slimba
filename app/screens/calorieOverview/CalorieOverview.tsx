@@ -1,22 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Platform, Alert, ScrollView, KeyboardAvoidingView } from 'react-native';
-import { useRouter } from 'expo-router';
-import useStore from '../../components/store'; // Importieren Sie den Store und die UserInfo-Schnittstelle
-import theme from '../../hooks/theme';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Platform,
+  Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "react-native";
+import useStore from "../../../components/store"; // Importieren Sie den Store und die UserInfo-Schnittstelle
+import theme from "../../../hooks/theme";
 
 export default function CalorieOverviewScreen() {
-  const router = useRouter();
   const recommendations = useStore((state) => state.recommendations);
-  const calculateRecommendation = useStore((state) => state.calculateRecommendation);
+  const calculateRecommendation = useStore(
+    (state) => state.calculateRecommendation
+  );
   const mealPercentages = useStore((state) => state.mealPercentages);
   const updateMealPercentage = useStore((state) => state.updateMealPercentage);
   const resetMealPercentages = useStore((state) => state.resetMealPercentages);
   const setRecommendations = useStore((state) => state.setRecommendations);
 
-  const [calories, setCalories] = useState(recommendations.totalCalories?.toString() || '');
-  const [frühstück, setFrühstück] = useState(mealPercentages.Frühstück.toString());
-  const [mittagessen, setMittagessen] = useState(mealPercentages.Mittagessen.toString());
-  const [abendessen, setAbendessen] = useState(mealPercentages.Abendessen.toString());
+  const [calories, setCalories] = useState(
+    recommendations.totalCalories?.toString() || ""
+  );
+  const [frühstück, setFrühstück] = useState(
+    mealPercentages.Frühstück.toString()
+  );
+  const [mittagessen, setMittagessen] = useState(
+    mealPercentages.Mittagessen.toString()
+  );
+  const [abendessen, setAbendessen] = useState(
+    mealPercentages.Abendessen.toString()
+  );
   const [snacks, setSnacks] = useState(mealPercentages.Snacks.toString());
   const [activeField, setActiveField] = useState<string | null>(null);
 
@@ -28,7 +46,7 @@ export default function CalorieOverviewScreen() {
   }, [mealPercentages]);
 
   useEffect(() => {
-    setCalories(recommendations.totalCalories?.toString() || '');
+    setCalories(recommendations.totalCalories?.toString() || "");
   }, [recommendations.totalCalories]);
 
   const roundTo10 = (num: number) => Math.round(num / 10) * 10;
@@ -37,77 +55,141 @@ export default function CalorieOverviewScreen() {
     const newCalories = parseFloat(calories);
 
     if (isNaN(newCalories)) {
-      Alert.alert('Fehler', 'Bitte geben Sie eine gültige Kalorienzahl ein.');
+      Alert.alert("Fehler", "Bitte geben Sie eine gültige Kalorienzahl ein.");
       return;
     }
 
     // Berechnung der neuen Kalorienverteilung basierend auf den aktuellen Prozentsätzen
-    const updatedFrühstück = roundTo10((newCalories * mealPercentages.Frühstück) / 100);
-    const updatedMittagessen = roundTo10((newCalories * mealPercentages.Mittagessen) / 100);
-    const updatedAbendessen = roundTo10((newCalories * mealPercentages.Abendessen) / 100);
-    const updatedSnacks = roundTo10((newCalories * mealPercentages.Snacks) / 100);
+    const updatedFrühstück = roundTo10(
+      (newCalories * mealPercentages.Frühstück) / 100
+    );
+    const updatedMittagessen = roundTo10(
+      (newCalories * mealPercentages.Mittagessen) / 100
+    );
+    const updatedAbendessen = roundTo10(
+      (newCalories * mealPercentages.Abendessen) / 100
+    );
+    const updatedSnacks = roundTo10(
+      (newCalories * mealPercentages.Snacks) / 100
+    );
 
     // Sicherstellen, dass keine Empfehlung unter 0 fällt
-    if (updatedFrühstück < 0 || updatedMittagessen < 0 || updatedAbendessen < 0 || updatedSnacks < 0) {
-      Alert.alert('Fehler', 'Kalorienverteilung darf nicht negativ sein.');
+    if (
+      updatedFrühstück < 0 ||
+      updatedMittagessen < 0 ||
+      updatedAbendessen < 0 ||
+      updatedSnacks < 0
+    ) {
+      Alert.alert("Fehler", "Kalorienverteilung darf nicht negativ sein.");
       return;
     }
 
     // Aktualisierung der Empfehlungen im Store
-    setRecommendations('Frühstück', updatedFrühstück - 50, updatedFrühstück + 50);
-    setRecommendations('Mittagessen', updatedMittagessen - 50, updatedMittagessen + 50);
-    setRecommendations('Abendessen', updatedAbendessen - 50, updatedAbendessen + 50);
-    setRecommendations('Snacks', updatedSnacks - 50, updatedSnacks + 50);
+    setRecommendations(
+      "Frühstück",
+      updatedFrühstück - 50,
+      updatedFrühstück + 50
+    );
+    setRecommendations(
+      "Mittagessen",
+      updatedMittagessen - 50,
+      updatedMittagessen + 50
+    );
+    setRecommendations(
+      "Abendessen",
+      updatedAbendessen - 50,
+      updatedAbendessen + 50
+    );
+    setRecommendations("Snacks", updatedSnacks - 50, updatedSnacks + 50);
 
     // Aktualisierung der Gesamtkalorienzahl im Store
     useStore.setState((state) => ({
       recommendations: {
         ...state.recommendations,
         totalCalories: newCalories,
-      }
+      },
     }));
 
-    Alert.alert('Erfolg', 'Kalorienanzahl und Empfehlungen erfolgreich aktualisiert');
+    Alert.alert(
+      "Erfolg",
+      "Kalorienanzahl und Empfehlungen erfolgreich aktualisiert"
+    );
   };
 
   const handleResetCalories = () => {
     calculateRecommendation();
     const updatedRecommendations = useStore.getState().recommendations;
-    setCalories(updatedRecommendations.totalCalories?.toString() || '');
+    setCalories(updatedRecommendations.totalCalories?.toString() || "");
   };
 
   const handleSavePercentages = () => {
-    const totalPercentage = parseFloat(frühstück) + parseFloat(mittagessen) + parseFloat(abendessen) + parseFloat(snacks);
+    const totalPercentage =
+      parseFloat(frühstück) +
+      parseFloat(mittagessen) +
+      parseFloat(abendessen) +
+      parseFloat(snacks);
 
     if (totalPercentage !== 100) {
-      Alert.alert('Fehler', 'Die Gesamtprozentzahl muss 100% betragen.');
+      Alert.alert("Fehler", "Die Gesamtprozentzahl muss 100% betragen.");
       return;
     }
 
     const newCalories = parseFloat(calories);
 
     if (isNaN(newCalories)) {
-      Alert.alert('Fehler', 'Bitte geben Sie eine gültige Kalorienzahl ein.');
+      Alert.alert("Fehler", "Bitte geben Sie eine gültige Kalorienzahl ein.");
       return;
     }
 
-    const updatedFrühstück = parseFloat(frühstück) === 0 ? 0 : roundTo10((newCalories * parseFloat(frühstück)) / 100);
-    const updatedMittagessen = parseFloat(mittagessen) === 0 ? 0 : roundTo10((newCalories * parseFloat(mittagessen)) / 100);
-    const updatedAbendessen = parseFloat(abendessen) === 0 ? 0 : roundTo10((newCalories * parseFloat(abendessen)) / 100);
-    const updatedSnacks = parseFloat(snacks) === 0 ? 0 : roundTo10((newCalories * parseFloat(snacks)) / 100);
+    const updatedFrühstück =
+      parseFloat(frühstück) === 0
+        ? 0
+        : roundTo10((newCalories * parseFloat(frühstück)) / 100);
+    const updatedMittagessen =
+      parseFloat(mittagessen) === 0
+        ? 0
+        : roundTo10((newCalories * parseFloat(mittagessen)) / 100);
+    const updatedAbendessen =
+      parseFloat(abendessen) === 0
+        ? 0
+        : roundTo10((newCalories * parseFloat(abendessen)) / 100);
+    const updatedSnacks =
+      parseFloat(snacks) === 0
+        ? 0
+        : roundTo10((newCalories * parseFloat(snacks)) / 100);
 
     // Sicherstellen, dass keine Empfehlung unter 0 fällt
-    if (updatedFrühstück < 0 || updatedMittagessen < 0 || updatedAbendessen < 0 || updatedSnacks < 0) {
-      Alert.alert('Fehler', 'Kalorienverteilung darf nicht negativ sein.');
+    if (
+      updatedFrühstück < 0 ||
+      updatedMittagessen < 0 ||
+      updatedAbendessen < 0 ||
+      updatedSnacks < 0
+    ) {
+      Alert.alert("Fehler", "Kalorienverteilung darf nicht negativ sein.");
       return;
     }
 
-    setRecommendations('Frühstück', updatedFrühstück - 50, updatedFrühstück + 50);
-    setRecommendations('Mittagessen', updatedMittagessen - 50, updatedMittagessen + 50);
-    setRecommendations('Abendessen', updatedAbendessen - 50, updatedAbendessen + 50);
-    setRecommendations('Snacks', updatedSnacks - 50, updatedSnacks + 50);
+    setRecommendations(
+      "Frühstück",
+      updatedFrühstück - 50,
+      updatedFrühstück + 50
+    );
+    setRecommendations(
+      "Mittagessen",
+      updatedMittagessen - 50,
+      updatedMittagessen + 50
+    );
+    setRecommendations(
+      "Abendessen",
+      updatedAbendessen - 50,
+      updatedAbendessen + 50
+    );
+    setRecommendations("Snacks", updatedSnacks - 50, updatedSnacks + 50);
 
-    Alert.alert('Erfolg', 'Prozentsätze und Empfehlungen erfolgreich aktualisiert');
+    Alert.alert(
+      "Erfolg",
+      "Prozentsätze und Empfehlungen erfolgreich aktualisiert"
+    );
   };
 
   const handleResetPercentages = () => {
@@ -115,47 +197,79 @@ export default function CalorieOverviewScreen() {
     const newCalories = parseFloat(calories);
     const mealPercentages = useStore.getState().mealPercentages;
 
-    const updatedFrühstück = roundTo10((newCalories * mealPercentages.Frühstück) / 100);
-    const updatedMittagessen = roundTo10((newCalories * mealPercentages.Mittagessen) / 100);
-    const updatedAbendessen = roundTo10((newCalories * mealPercentages.Abendessen) / 100);
-    const updatedSnacks = roundTo10((newCalories * mealPercentages.Snacks) / 100);
+    const updatedFrühstück = roundTo10(
+      (newCalories * mealPercentages.Frühstück) / 100
+    );
+    const updatedMittagessen = roundTo10(
+      (newCalories * mealPercentages.Mittagessen) / 100
+    );
+    const updatedAbendessen = roundTo10(
+      (newCalories * mealPercentages.Abendessen) / 100
+    );
+    const updatedSnacks = roundTo10(
+      (newCalories * mealPercentages.Snacks) / 100
+    );
 
-    setRecommendations('Frühstück', updatedFrühstück - 50, updatedFrühstück + 50);
-    setRecommendations('Mittagessen', updatedMittagessen - 50, updatedMittagessen + 50);
-    setRecommendations('Abendessen', updatedAbendessen - 50, updatedAbendessen + 50);
-    setRecommendations('Snacks', updatedSnacks - 50, updatedSnacks + 50);
+    setRecommendations(
+      "Frühstück",
+      updatedFrühstück - 50,
+      updatedFrühstück + 50
+    );
+    setRecommendations(
+      "Mittagessen",
+      updatedMittagessen - 50,
+      updatedMittagessen + 50
+    );
+    setRecommendations(
+      "Abendessen",
+      updatedAbendessen - 50,
+      updatedAbendessen + 50
+    );
+    setRecommendations("Snacks", updatedSnacks - 50, updatedSnacks + 50);
   };
 
   const inputStyle = (field: string) => [
     styles.input,
-    activeField === field && styles.activeInput
+    activeField === field && styles.activeInput,
   ];
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <ScrollView 
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
         contentContainerStyle={styles.container}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
       >
         {/* Gesamtübersicht */}
         <View style={styles.sectionContainer}>
-          <Text style={styles.sectionSubtext}>Passe deine Aufteilung auf deine Bedürfnisse oder auf Empfehlung einer professionellen Ernährungsberatung an.</Text>
+          <Text style={styles.sectionSubtext}>
+            Passe deine Aufteilung auf deine Bedürfnisse oder auf Empfehlung
+            einer professionellen Ernährungsberatung an.
+          </Text>
 
           <Text style={styles.label}>Tägliche Kalorienaufnahme</Text>
           <TextInput
-            style={inputStyle('calories')}
+            style={inputStyle("calories")}
             value={calories}
             onChangeText={setCalories}
-            keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-            onFocus={() => setActiveField('calories')}
+            keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+            onFocus={() => setActiveField("calories")}
             onBlur={() => setActiveField(null)}
           />
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSaveCalories}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSaveCalories}
+            >
               <Text style={styles.saveButtonText}>Speichern</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.resetButton} onPress={handleResetCalories}>
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={handleResetCalories}
+            >
               <Text style={styles.resetButtonText}>Zurücksetzen</Text>
             </TouchableOpacity>
           </View>
@@ -163,107 +277,121 @@ export default function CalorieOverviewScreen() {
 
         {/* Kalorienempfehlungen */}
         <View style={[styles.sectionContainer, styles.highlightContainer]}>
-          <Text style={styles.recommendationsTitle}>Empfehlung der Aufteilung</Text>
+          <Text style={styles.recommendationsTitle}>
+            Empfehlung der Aufteilung
+          </Text>
           <View style={styles.recommendationsContainer}>
             <View style={styles.recommendationRow}>
               <Text style={styles.recommendation}>Frühstück:</Text>
               <Text style={styles.recommendationValue}>
-                {Math.max(0, Math.round(recommendations.Frühstück.min))} - {Math.max(0, Math.round(recommendations.Frühstück.max))} kcal
+                {Math.max(0, Math.round(recommendations.Frühstück.min))} -{" "}
+                {Math.max(0, Math.round(recommendations.Frühstück.max))} kcal
               </Text>
             </View>
             <View style={styles.recommendationRow}>
               <Text style={styles.recommendation}>Mittagessen:</Text>
               <Text style={styles.recommendationValue}>
-                {Math.max(0, Math.round(recommendations.Mittagessen.min))} - {Math.max(0, Math.round(recommendations.Mittagessen.max))} kcal
+                {Math.max(0, Math.round(recommendations.Mittagessen.min))} -{" "}
+                {Math.max(0, Math.round(recommendations.Mittagessen.max))} kcal
               </Text>
             </View>
             <View style={styles.recommendationRow}>
               <Text style={styles.recommendation}>Abendessen:</Text>
               <Text style={styles.recommendationValue}>
-                {Math.max(0, Math.round(recommendations.Abendessen.min))} - {Math.max(0, Math.round(recommendations.Abendessen.max))} kcal
+                {Math.max(0, Math.round(recommendations.Abendessen.min))} -{" "}
+                {Math.max(0, Math.round(recommendations.Abendessen.max))} kcal
               </Text>
             </View>
             <View style={styles.recommendationRow}>
               <Text style={styles.recommendation}>Snacks:</Text>
               <Text style={styles.recommendationValue}>
-                {Math.max(0, Math.round(recommendations.Snacks.min))} - {Math.max(0, Math.round(recommendations.Snacks.max))} kcal
+                {Math.max(0, Math.round(recommendations.Snacks.min))} -{" "}
+                {Math.max(0, Math.round(recommendations.Snacks.max))} kcal
               </Text>
             </View>
             <View style={styles.recommendationRow}>
               <Text style={styles.totalRecommendation}>Tagesziel:</Text>
-              <Text style={styles.totalRecommendationValue}>{recommendations.totalCalories} kcal</Text>
+              <Text style={styles.totalRecommendationValue}>
+                {recommendations.totalCalories} kcal
+              </Text>
             </View>
           </View>
 
           <Text style={styles.label}>Frühstück (%)</Text>
           <TextInput
-            style={inputStyle('frühstück')}
+            style={inputStyle("frühstück")}
             value={frühstück}
             onChangeText={(value) => {
               setFrühstück(value);
               const percentage = parseFloat(value);
               if (!isNaN(percentage)) {
-                updateMealPercentage('Frühstück', percentage);
+                updateMealPercentage("Frühstück", percentage);
               }
             }}
-            keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-            onFocus={() => setActiveField('frühstück')}
+            keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+            onFocus={() => setActiveField("frühstück")}
             onBlur={() => setActiveField(null)}
           />
 
           <Text style={styles.label}>Mittagessen (%)</Text>
           <TextInput
-            style={inputStyle('mittagessen')}
+            style={inputStyle("mittagessen")}
             value={mittagessen}
             onChangeText={(value) => {
               setMittagessen(value);
               const percentage = parseFloat(value);
               if (!isNaN(percentage)) {
-                updateMealPercentage('Mittagessen', percentage);
+                updateMealPercentage("Mittagessen", percentage);
               }
             }}
-            keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-            onFocus={() => setActiveField('mittagessen')}
+            keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+            onFocus={() => setActiveField("mittagessen")}
             onBlur={() => setActiveField(null)}
           />
 
           <Text style={styles.label}>Abendessen (%)</Text>
           <TextInput
-            style={inputStyle('abendessen')}
+            style={inputStyle("abendessen")}
             value={abendessen}
             onChangeText={(value) => {
               setAbendessen(value);
               const percentage = parseFloat(value);
               if (!isNaN(percentage)) {
-                updateMealPercentage('Abendessen', percentage);
+                updateMealPercentage("Abendessen", percentage);
               }
             }}
-            keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-            onFocus={() => setActiveField('abendessen')}
+            keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+            onFocus={() => setActiveField("abendessen")}
             onBlur={() => setActiveField(null)}
           />
 
           <Text style={styles.label}>Snacks (%)</Text>
           <TextInput
-            style={inputStyle('snacks')}
+            style={inputStyle("snacks")}
             value={snacks}
             onChangeText={(value) => {
               setSnacks(value);
               const percentage = parseFloat(value);
               if (!isNaN(percentage)) {
-                updateMealPercentage('Snacks', percentage);
+                updateMealPercentage("Snacks", percentage);
               }
             }}
-            keyboardType={Platform.OS === 'ios' ? 'decimal-pad' : 'numeric'}
-            onFocus={() => setActiveField('snacks')}
+            keyboardType={Platform.OS === "ios" ? "decimal-pad" : "numeric"}
+            onFocus={() => setActiveField("snacks")}
             onBlur={() => setActiveField(null)}
           />
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.saveButton} onPress={handleSavePercentages}>
+            <TouchableOpacity
+              style={styles.saveButton}
+              onPress={handleSavePercentages}
+            >
               <Text style={styles.saveButtonText}>Speichern</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.resetButton} onPress={handleResetPercentages}>
+            <TouchableOpacity
+              style={styles.resetButton}
+              onPress={handleResetPercentages}
+            >
               <Text style={styles.resetButtonText}>Zurücksetzen</Text>
             </TouchableOpacity>
           </View>
@@ -316,7 +444,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderColor: theme.colors.secondaryBeige100,
     borderWidth: 1,
@@ -337,8 +465,8 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   saveButton: {
@@ -347,8 +475,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 20,
     backgroundColor: theme.colors.primaryGreen100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   saveButtonText: {
     fontSize: 18,
@@ -362,8 +490,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     borderWidth: 1,
     borderColor: theme.colors.secondaryBeige100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   resetButtonText: {
     fontSize: 18,
@@ -386,8 +514,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   recommendationRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 5,
   },
   recommendation: {
@@ -414,4 +542,3 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
 });
-

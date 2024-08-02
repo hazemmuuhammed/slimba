@@ -1,18 +1,25 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Animated, Text, View, Modal, TouchableOpacity, ActivityIndicator, ImageBackground } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
-import MealDashboard from '@/components/mealDashboard';
-import Davatar from '@/components/davatar';
-import TipOfDayModal from '@/components/TipOfDayModal';
-import useStore from '../../components/store';
-import theme from '../../hooks/theme';
-import quotes from '../../assets/quotes.json';
+import React, { useEffect, useState, useRef } from "react";
+import {
+  StyleSheet,
+  Animated,
+  Text,
+  View,
+  Modal,
+  TouchableOpacity,
+  ActivityIndicator,
+  ImageBackground,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import MealDashboard from "@/app/screens/dashboard/components/mealDashboard";
+import Davatar from "@/app/screens/dashboard/components/davatar";
+import TipOfDayModal from "@/components/TipOfDayModal";
+import useStore from "../../../components/store";
+import theme from "../../../hooks/theme";
+import quotes from "./services/quotes.json";
 
-export default function Dashboard() {
-  const router = useRouter();
+export default function Dashboard({ navigation }: any) {
   const currentDate = useStore((state) => state.currentDate);
   const points = useStore((state) => state.dailyData[currentDate]?.points || 0);
   const [prevPoints, setPrevPoints] = useState(points);
@@ -20,7 +27,8 @@ export default function Dashboard() {
   const [isFabOpened, setIsFabOpened] = useState(false);
   const [loading, setLoading] = useState(true);
   const [showPerfectDay, setShowPerfectDay] = useState(false);
-  const [endChallengeModalVisible, setEndChallengeModalVisible] = useState(false); // Modal for challenge end
+  const [endChallengeModalVisible, setEndChallengeModalVisible] =
+    useState(false); // Modal for challenge end
   const activeChallenge = useStore((state) => state.activeChallenge);
   const completeChallenge = useStore((state) => state.completeChallenge);
   const challengeProgress = useStore((state) => state.challengeProgress);
@@ -28,9 +36,9 @@ export default function Dashboard() {
   const scaleAnim = useRef(new Animated.Value(1)).current;
   const overlayAnim = useRef(new Animated.Value(0)).current;
   const prevDate = useRef(currentDate);
-  const [quote, setQuote] = useState('');
-  const [author, setAuthor] = useState('');
-  const [loadingMessage, setLoadingMessage] = useState('Wird geladen...');
+  const [quote, setQuote] = useState("");
+  const [author, setAuthor] = useState("");
+  const [loadingMessage, setLoadingMessage] = useState("Wird geladen...");
 
   useEffect(() => {
     const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -38,7 +46,9 @@ export default function Dashboard() {
     setAuthor(randomQuote.author);
 
     const timeout = setTimeout(() => {
-      setLoadingMessage('Heute dauert es wiedermal länger. Es scheint, dass Slimba noch schläft. Prüfe deine Internet-Verbindung.');
+      setLoadingMessage(
+        "Heute dauert es wiedermal länger. Es scheint, dass Slimba noch schläft. Prüfe deine Internet-Verbindung."
+      );
     }, 12000); // Zeigt die Nachricht nach 12 Sekunden an
 
     return () => clearTimeout(timeout);
@@ -126,7 +136,7 @@ export default function Dashboard() {
       {loading && (
         <View style={styles.loadingOverlay}>
           <ImageBackground
-            source={require('../../assets/images/inspiration.jpg')}
+            source={require("../../../assets/images/inspiration.jpg")}
             style={styles.loadingBackground}
           >
             <View style={styles.quoteContainer}>
@@ -134,13 +144,17 @@ export default function Dashboard() {
               <Text style={styles.authorText}>- {author}</Text>
             </View>
             <View style={styles.loadingBottomContainer}>
-              <ActivityIndicator size="large" color="#fff" style={styles.loadingIndicator} />
+              <ActivityIndicator
+                size="large"
+                color="#fff"
+                style={styles.loadingIndicator}
+              />
               <Text style={styles.loadingMessage}>{loadingMessage}</Text>
             </View>
           </ImageBackground>
         </View>
       )}
-      <Header />
+      <Header navigation={navigation} />
       <View style={styles.content}>
         <Davatar style={styles.davatar} onLoad={() => setLoading(false)} />
         <View style={styles.mealDashboard}>
@@ -172,7 +186,11 @@ export default function Dashboard() {
       {isFabOpened && (
         <Animated.View style={[styles.fabOverlay, overlayStyle]} />
       )}
-      <Footer onCloseOverlay={handleFabCloseOverlay} onToggle={handleFabToggle} style={styles.footer} />
+      <Footer
+        onCloseOverlay={handleFabCloseOverlay}
+        onToggle={handleFabToggle}
+        style={styles.footer}
+      />
 
       <Modal
         transparent={true}
@@ -182,12 +200,20 @@ export default function Dashboard() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.confirmModalContent}>
-            <Text style={styles.confirmModalText}>Hast du die Challenge bestanden?</Text>
+            <Text style={styles.confirmModalText}>
+              Hast du die Challenge bestanden?
+            </Text>
             <View style={styles.confirmButtonsContainer}>
-              <TouchableOpacity style={[styles.confirmButton, styles.confirmButtonYes]} onPress={() => handleChallengeEnd(true)}>
+              <TouchableOpacity
+                style={[styles.confirmButton, styles.confirmButtonYes]}
+                onPress={() => handleChallengeEnd(true)}
+              >
                 <Text style={styles.confirmButtonText}>Ja</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.confirmButton, styles.confirmButtonNo]} onPress={() => handleChallengeEnd(false)}>
+              <TouchableOpacity
+                style={[styles.confirmButton, styles.confirmButtonNo]}
+                onPress={() => handleChallengeEnd(false)}
+              >
                 <Text style={styles.confirmButtonText}>Nein</Text>
               </TouchableOpacity>
             </View>
@@ -212,17 +238,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   pointsChangeContainer: {
-    position: 'absolute',
-    top: '30%',
-    left: '30%',
+    position: "absolute",
+    top: "30%",
+    left: "30%",
     transform: [{ translateX: -50 }, { translateY: -50 }],
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   pointsChangeText: {
     fontSize: 24,
-    color: 'rgba(255, 255, 255, 0.8)',
-    fontWeight: 'bold',
+    color: "rgba(255, 255, 255, 0.8)",
+    fontWeight: "bold",
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
@@ -231,48 +257,48 @@ const styles = StyleSheet.create({
   },
   loadingBackground: {
     flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   quoteContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   quoteText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 22,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 10,
     marginHorizontal: 20,
     fontFamily: theme.fonts.semiBold,
   },
   authorText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginBottom: 20,
     fontFamily: theme.fonts.regular,
   },
   loadingBottomContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 50,
-    alignItems: 'center',
+    alignItems: "center",
   },
   loadingIndicator: {
     marginBottom: 10,
   },
   loadingMessage: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginHorizontal: 20,
     fontFamily: theme.fonts.regular,
   },
   fabOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(251, 203, 145, 0.7)',
+    backgroundColor: "rgba(251, 203, 145, 0.7)",
     zIndex: 1,
   },
   footer: {
@@ -280,16 +306,16 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   confirmModalContent: {
-    width: '80%',
+    width: "80%",
     backgroundColor: theme.colors.white,
     padding: 20,
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: "center",
     borderWidth: 1,
     borderColor: theme.colors.secondaryBeige100,
     shadowColor: theme.colors.black,
@@ -301,18 +327,18 @@ const styles = StyleSheet.create({
   confirmModalText: {
     fontSize: 18,
     marginBottom: 20,
-    textAlign: 'center',
-    width: '100%',
+    textAlign: "center",
+    width: "100%",
     fontFamily: theme.fonts.regular,
   },
   confirmButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   confirmButton: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 10,
     borderRadius: 10,
     marginHorizontal: 5,
@@ -326,7 +352,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: theme.colors.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontFamily: theme.fonts.semiBold,
   },
 });

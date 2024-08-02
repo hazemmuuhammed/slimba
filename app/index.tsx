@@ -1,19 +1,25 @@
-import { StyleSheet, Text, View, LogBox, TouchableOpacity, ImageBackground } from 'react-native';
-import React from 'react';
-import { Link, useRouter } from 'expo-router';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import theme from '@/hooks/theme'; // Importiere das theme-Modul
-
+import {
+  StyleSheet,
+  Text,
+  View,
+  LogBox,
+  TouchableOpacity,
+  ImageBackground,
+} from "react-native";
+import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
+import theme from "@/hooks/theme"; // Importiere das theme-Modul
+import { useNavigation } from "@react-navigation/native";
 LogBox.ignoreAllLogs();
 console.warn = () => {};
 
 const IndexScreen = () => {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require('../assets/images/slimbavisualgym.jpg')}
+        source={require("../assets/images/slimbavisualgym.jpg")}
         style={styles.backgroundImage}
         imageStyle={{ opacity: 0.2 }}
       >
@@ -21,16 +27,25 @@ const IndexScreen = () => {
           <View style={styles.content}>
             <Text style={styles.welcomeText}></Text>
           </View>
-          <TouchableOpacity style={styles.fullWidthButton} onPress={() => router.push('/onboarding/OnboardingScreen1')}>
+          <TouchableOpacity
+            style={styles.fullWidthButton}
+            onPress={() => navigation.navigate("OnboardingScreen1")}
+          >
             <View style={styles.button}>
               <Text style={styles.buttonText}>Jetzt loslegen</Text>
             </View>
           </TouchableOpacity>
           <View style={styles.linkContainer}>
-            <Text style={styles.infoText}>Du hast bereits ein Benutzerkonto?</Text>
-            <Link href="/screens/dashboard">
-              <Text style={styles.linkText}>Anmelden</Text>
-            </Link>
+            <Text style={styles.infoText}>
+              Du hast bereits ein Benutzerkonto?
+            </Text>
+
+            <Text
+              onPress={() => navigation.navigate("Main")}
+              style={styles.linkText}
+            >
+              Anmelden
+            </Text>
           </View>
         </SafeAreaView>
       </ImageBackground>
@@ -47,19 +62,19 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     ...StyleSheet.absoluteFillObject,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   safeArea: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   welcomeText: {
     fontFamily: theme.fonts.bold,
@@ -68,25 +83,25 @@ const styles = StyleSheet.create({
     color: theme.colors.primaryGreen100,
   },
   fullWidthButton: {
-    width: '100%',
+    width: "100%",
     marginBottom: 10,
   },
   button: {
-    width: '100%',
+    width: "100%",
     backgroundColor: theme.colors.primaryGreen100,
     paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 24,
   },
   buttonText: {
     fontFamily: theme.fonts.semiBold,
     fontSize: 18,
     color: theme.colors.white,
-    textAlign: 'center',
+    textAlign: "center",
   },
   linkContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 5,
   },
   infoText: {
@@ -98,6 +113,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
     fontSize: 14,
     color: theme.colors.primaryGreen100,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
   },
 });

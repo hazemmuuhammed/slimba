@@ -1,21 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import theme from '../../hooks/theme';
-
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import theme from "../../hooks/theme";
+import { useNavigation } from "@react-navigation/native";
 export default function OnboardingScreen5() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   const handleNext = () => {
-    router.push('/onboarding/OnboardingScreen6');
+    navigation.navigate("OnboardingScreen6");
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={require('../../assets/images/avatar.png')}
+          source={require("../../assets/images/avatar.png")}
           style={styles.image}
           resizeMode="contain"
         />
@@ -26,7 +25,11 @@ export default function OnboardingScreen5() {
       <View style={styles.footerContainer}>
         <View style={styles.buttonBackground}>
           <TouchableOpacity style={styles.addButton} onPress={handleNext}>
-            <Ionicons name="arrow-forward" size={24} color={theme.colors.white} />
+            <Ionicons
+              name="arrow-forward"
+              size={24}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -41,12 +44,12 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     flex: 4.5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   contentContainer: {
     flex: 5,
@@ -54,8 +57,8 @@ const styles = StyleSheet.create({
     padding: 20,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   title: {
     fontSize: 24,
@@ -66,9 +69,9 @@ const styles = StyleSheet.create({
   footerContainer: {
     flex: 0.9,
     backgroundColor: theme.colors.white,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -78,10 +81,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 30,
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
@@ -89,8 +92,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 60,
     height: 60,
     borderRadius: 30,

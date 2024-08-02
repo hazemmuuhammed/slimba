@@ -1,15 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Dimensions, Animated, Image } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import useStore from '../../components/store';
-import theme from '../../hooks/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Reanimated, { SlideInRight, FadeIn, FadeOut } from 'react-native-reanimated';
-
+import React, { useState, useEffect, useRef } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Dimensions,
+  Animated,
+  Image,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import useStore from "../../components/store";
+import theme from "../../hooks/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Reanimated, {
+  SlideInRight,
+  FadeIn,
+  FadeOut,
+} from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
 export default function OnboardingScreen1() {
-  const router = useRouter();
-  const [displayName, setDisplayName] = useState('');
+  const navigation = useNavigation<any>();
+  const [displayName, setDisplayName] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const scrollViewRef = useRef<ScrollView | null>(null);
   const setUserInfo = useStore((state) => state.setUserInfo);
@@ -33,8 +48,8 @@ export default function OnboardingScreen1() {
   }, []);
 
   const handleNext = () => {
-    setUserInfo(displayName, 0, 0, '', 1.2, '', 'male');
-    router.push('/onboarding/OnboardingScreen2');
+    setUserInfo(displayName, 0, 0, "", 1.2, "", "male");
+    navigation.navigate("OnboardingScreen2");
   };
 
   const handleFocus = () => {
@@ -50,7 +65,10 @@ export default function OnboardingScreen1() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Reanimated.View entering={SlideInRight.duration(1000)} style={styles.header}>
+      <Reanimated.View
+        entering={SlideInRight.duration(1000)}
+        style={styles.header}
+      >
         <View style={styles.progressContainer}>
           <View style={[styles.progressDot, styles.activeDot]} />
           <View style={styles.progressDot} />
@@ -60,21 +78,47 @@ export default function OnboardingScreen1() {
       </Reanimated.View>
       <KeyboardAvoidingView
         style={styles.keyboardAvoidingContainer}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
       >
         <ScrollView
           ref={scrollViewRef}
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
-          <Reanimated.View entering={SlideInRight.duration(1000)} style={styles.imageContainer}>
-            <Image source={require('../../assets/images/slimbavisualgym.jpg')} style={styles.image} />
+          <Reanimated.View
+            entering={SlideInRight.duration(1000)}
+            style={styles.imageContainer}
+          >
+            <Image
+              source={require("../../assets/images/slimbavisualgym.jpg")}
+              style={styles.image}
+            />
           </Reanimated.View>
-          <Reanimated.View entering={SlideInRight.duration(1000)} style={styles.contentContainer}>
-            <Text style={styles.text}>Hey, ich bin <Text style={styles.textgreen}>Slimba </Text> und werde dir dabei helfen, <Text style={styles.textbold}>dein Wohlfühlgewicht zu erreichen und zu halten!</Text></Text>
-            <Text style={styles.text}>Egal, ob du ein bisschen <Text style={styles.textbold}>abnehmen </Text>oder einfach <Text style={styles.textbold}>fitter </Text>werden möchtest – ich bin hier, um dich zu <Text style={styles.textbold}>motivieren </Text>und mit spielerischen Elementen zu <Text style={styles.textbold}>unterstützen.</Text></Text>
-            <Text style={styles.text}>Doch bevor wir loslegen, möchte ich dich besser kennenlernen! Wie ist dein <Text style={styles.textbold}>Name?</Text></Text>
+          <Reanimated.View
+            entering={SlideInRight.duration(1000)}
+            style={styles.contentContainer}
+          >
+            <Text style={styles.text}>
+              Hey, ich bin <Text style={styles.textgreen}>Slimba </Text> und
+              werde dir dabei helfen,{" "}
+              <Text style={styles.textbold}>
+                dein Wohlfühlgewicht zu erreichen und zu halten!
+              </Text>
+            </Text>
+            <Text style={styles.text}>
+              Egal, ob du ein bisschen{" "}
+              <Text style={styles.textbold}>abnehmen </Text>oder einfach{" "}
+              <Text style={styles.textbold}>fitter </Text>werden möchtest – ich
+              bin hier, um dich zu{" "}
+              <Text style={styles.textbold}>motivieren </Text>und mit
+              spielerischen Elementen zu{" "}
+              <Text style={styles.textbold}>unterstützen.</Text>
+            </Text>
+            <Text style={styles.text}>
+              Doch bevor wir loslegen, möchte ich dich besser kennenlernen! Wie
+              ist dein <Text style={styles.textbold}>Name?</Text>
+            </Text>
             <TextInput
               style={[styles.input, isFocused && styles.inputFocused]}
               placeholder="Dein Name"
@@ -93,7 +137,11 @@ export default function OnboardingScreen1() {
             onPress={handleNext}
             disabled={!displayName}
           >
-            <Ionicons name="arrow-forward" size={24} color={theme.colors.white} />
+            <Ionicons
+              name="arrow-forward"
+              size={24}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -101,7 +149,7 @@ export default function OnboardingScreen1() {
   );
 }
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -111,15 +159,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
     backgroundColor: theme.colors.white,
   },
   progressContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   progressDot: {
     width: 10,
@@ -133,13 +181,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: height * 0.38,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: theme.colors.secondaryBeige20,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -173,7 +221,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    width: '100%',
+    width: "100%",
     height: 40,
     borderColor: theme.colors.secondaryBeige100,
     backgroundColor: theme.colors.white,
@@ -191,11 +239,11 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primaryGreen100,
   },
   footerContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -205,10 +253,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 0,
     right: 0,
     marginBottom: 0,
@@ -219,8 +267,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 60,
     height: 60,
     borderRadius: 30,

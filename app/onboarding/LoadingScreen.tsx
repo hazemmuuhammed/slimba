@@ -1,12 +1,12 @@
 // LoadingScreen.tsx
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
-import theme from '../../hooks/theme';
-import DavatarWrapper from '@/components/DavatarWrapper';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import theme from "../../hooks/theme";
+import DavatarWrapper from "@/components/DavatarWrapper";
+import { useNavigation } from "@react-navigation/native";
 
 const LoadingScreen = () => {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const [davatarLoaded, setDavatarLoaded] = useState(false);
 
   const handleLoad = () => {
@@ -14,7 +14,7 @@ const LoadingScreen = () => {
   };
 
   const handlePress = () => {
-    router.push('/screens/dashboard');
+    navigation.navigate("Main");
   };
 
   return (
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.primaryGreen100,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     fontSize: 24,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderColor: theme.colors.white,
     borderWidth: 2,
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   buttonText: {
     color: theme.colors.white,

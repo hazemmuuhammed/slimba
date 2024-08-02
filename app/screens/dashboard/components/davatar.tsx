@@ -1,12 +1,12 @@
-import { StyleSheet, View, ImageBackground, Text } from 'react-native';
-import React, { Suspense, useState, useEffect } from 'react';
-import { Canvas } from '@react-three/fiber/native';
-import Trigger from '@/components/Trigger';
-import Loader from '@/components/Loader';
-import { Lion } from '@/components/Lion';
-import theme from '../hooks/theme';
+import { StyleSheet, View, ImageBackground, Text } from "react-native";
+import React, { Suspense, useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber/native";
+import Trigger from "@/components/Trigger";
+import Loader from "@/components/Loader";
+import { Lion } from "@/components/Lion";
+import theme from "../../../../hooks/theme";
 
-const Davatar = ({ onLoad, style }: { onLoad?: () => void, style?: any }) => {
+const Davatar = ({ onLoad, style }: { onLoad?: () => void; style?: any }) => {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Davatar = ({ onLoad, style }: { onLoad?: () => void, style?: any }) => {
         </View>
       )}
       <ImageBackground
-        source={require('../assets/images/background.jpg')}
+        source={require("../../../../assets/images/background.jpg")}
         style={styles.background}
       >
         <View style={styles.modelContainer}>
@@ -45,29 +45,31 @@ const Davatar = ({ onLoad, style }: { onLoad?: () => void, style?: any }) => {
             }}
           >
             <ambientLight intensity={0.8} /> {/* Soft overall lighting */}
-            <directionalLight 
-              position={[5, 10, 5]} 
-              intensity={2.2} 
-              castShadow 
-              shadow-mapSize-width={1024} 
+            <directionalLight
+              position={[5, 10, 5]}
+              intensity={2.2}
+              castShadow
+              shadow-mapSize-width={1024}
               shadow-mapSize-height={1024}
-              shadow-camera-far={50} 
-              shadow-camera-left={-10} 
-              shadow-camera-right={10} 
-              shadow-camera-top={10} 
+              shadow-camera-far={50}
+              shadow-camera-left={-10}
+              shadow-camera-right={10}
+              shadow-camera-top={10}
               shadow-camera-bottom={-10}
             />
-            
             <Suspense fallback={<Trigger setLoading={setLoading} />}>
-              <Lion 
-                scale={[1, 1, 1]} 
-                position={[0, -2, -2]} 
+              <Lion
+                scale={[1, 1, 1]}
+                position={[0, -2, -2]}
                 castShadow
                 receiveShadow
               />
             </Suspense>
-
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -4, 0]} receiveShadow>
+            <mesh
+              rotation={[-Math.PI / 2, 0, 0]}
+              position={[0, -4, 0]}
+              receiveShadow
+            >
               <planeGeometry args={[40, 5]} />
               <meshStandardMaterial color="#FBCB91" /> {/* Dark brown color */}
             </mesh>
@@ -87,18 +89,18 @@ const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: theme.colors.primaryGreen100, // Primary green color from theme
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     zIndex: 1, // Ensure overlay is above other content
   },
   loadingText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   background: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
   modelContainer: {
     flex: 1,

@@ -1,32 +1,57 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Alert, Animated } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import useStore from '../../components/store';
-import theme from '../../hooks/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useState, useRef, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Alert,
+  Animated,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import useStore from "../../components/store";
+import theme from "../../hooks/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 const activityLevels = [
-  { label: 'Sitzend', description: 'wenig oder keine Bewegung', value: '1.2' },
-  { label: 'Leicht aktiv', description: 'leichte Bewegung/Sport 1-3 Tage/Woche', value: '1.375' },
-  { label: 'Mäßig aktiv', description: 'mäßige Bewegung/Sport 3-5 Tage/Woche', value: '1.55' },
-  { label: 'Sehr aktiv', description: 'anstrengende Bewegung/Sport 6-7 Tage/Woche', value: '1.725' },
-  { label: 'Extrem aktiv', description: 'sehr anstrengende Bewegung/Sport und körperliche Arbeit', value: '1.9' },
+  { label: "Sitzend", description: "wenig oder keine Bewegung", value: "1.2" },
+  {
+    label: "Leicht aktiv",
+    description: "leichte Bewegung/Sport 1-3 Tage/Woche",
+    value: "1.375",
+  },
+  {
+    label: "Mäßig aktiv",
+    description: "mäßige Bewegung/Sport 3-5 Tage/Woche",
+    value: "1.55",
+  },
+  {
+    label: "Sehr aktiv",
+    description: "anstrengende Bewegung/Sport 6-7 Tage/Woche",
+    value: "1.725",
+  },
+  {
+    label: "Extrem aktiv",
+    description: "sehr anstrengende Bewegung/Sport und körperliche Arbeit",
+    value: "1.9",
+  },
 ];
 
 const goals = [
-  { label: 'Gewicht halten', value: 'maintain' },
-  { label: 'Abnehmen', value: 'abnehmen' },
-  { label: 'Zunehmen', value: 'zunehmen' },
+  { label: "Gewicht halten", value: "maintain" },
+  { label: "Abnehmen", value: "abnehmen" },
+  { label: "Zunehmen", value: "zunehmen" },
 ];
 
 export default function OnboardingScreen3() {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const userInfo = useStore((state) => state.userInfo);
   const setUserInfo = useStore((state) => state.setUserInfo);
 
-  const [activityLevel, setActivityLevel] = useState('');
-  const [goal, setGoal] = useState('');
+  const [activityLevel, setActivityLevel] = useState("");
+  const [goal, setGoal] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
   const textOpacity = useRef(new Animated.Value(0)).current;
@@ -66,14 +91,25 @@ export default function OnboardingScreen3() {
       const newActivityLevel = parseFloat(activityLevel);
 
       if (isNaN(newActivityLevel)) {
-        Alert.alert('Fehler', 'Bitte gebe ein gültiges Aktivitätsniveau ein.');
+        Alert.alert("Fehler", "Bitte gebe ein gültiges Aktivitätsniveau ein.");
         return;
       }
 
-      setUserInfo(userInfo.displayName, userInfo.weight, userInfo.height, userInfo.birthday, newActivityLevel, goal, userInfo.gender);
-      router.push('/onboarding/OnboardingScreen4');
+      setUserInfo(
+        userInfo.displayName,
+        userInfo.weight,
+        userInfo.height,
+        userInfo.birthday,
+        newActivityLevel,
+        goal,
+        userInfo.gender
+      );
+      navigation.navigate("OnboardingScreen4");
     } else {
-      Alert.alert('Fehler', 'Bitte wähle sowohl ein Aktivitätsniveau als auch ein Ziel.');
+      Alert.alert(
+        "Fehler",
+        "Bitte wähle sowohl ein Aktivitätsniveau als auch ein Ziel."
+      );
     }
   };
 
@@ -87,15 +123,27 @@ export default function OnboardingScreen3() {
           <View style={styles.progressDot} />
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.contentContainer}>
-          <Text style={styles.text}>Vielen Dank für dein Vertrauen<Text style={styles.boldText}> {userInfo.displayName}</Text>.</Text>
+          <Text style={styles.text}>
+            Vielen Dank für dein Vertrauen
+            <Text style={styles.boldText}> {userInfo.displayName}</Text>.
+          </Text>
           <View style={styles.separator} />
-          <Text style={styles.label}>Wie sieht dein <Text style={styles.boldText}>Aktivitätsniveau</Text> aus?</Text>
+          <Text style={styles.label}>
+            Wie sieht dein <Text style={styles.boldText}>Aktivitätsniveau</Text>{" "}
+            aus?
+          </Text>
           {activityLevels.map((level) => (
             <TouchableOpacity
               key={level.value}
-              style={[styles.button, activityLevel === level.value && styles.activeButton]}
+              style={[
+                styles.button,
+                activityLevel === level.value && styles.activeButton,
+              ]}
               onPress={() => setActivityLevel(level.value)}
             >
               <Text style={styles.buttonLabel}>{level.label}</Text>
@@ -103,7 +151,9 @@ export default function OnboardingScreen3() {
             </TouchableOpacity>
           ))}
           <View style={styles.separator} />
-          <Text style={styles.label}>Welches <Text style={styles.boldText}>Ziel</Text> verfolgst du?</Text>
+          <Text style={styles.label}>
+            Welches <Text style={styles.boldText}>Ziel</Text> verfolgst du?
+          </Text>
           {goals.map((g) => (
             <View key={g.value} style={styles.goalContainer}>
               <TouchableOpacity
@@ -112,9 +162,14 @@ export default function OnboardingScreen3() {
               >
                 <Text style={styles.buttonText}>{g.label}</Text>
               </TouchableOpacity>
-              {goal === 'zunehmen' && g.value === 'zunehmen' && (
+              {goal === "zunehmen" && g.value === "zunehmen" && (
                 <Text style={styles.additionalText}>
-                  Die Gamification Elemente (Punkteverteilung) der App sind zurzeit erst auf das Ziel "Abnehmen" ausgelegt. Zu einem späteren Zeitpunkt wird dies auch auf das Ziel "Zunehmen" angepasst. Du kannst die App aber dennoch nutzen. Kalorienempfehlungen werden auch auf das Ziel "Zunehmen" angepasst.
+                  Die Gamification Elemente (Punkteverteilung) der App sind
+                  zurzeit erst auf das Ziel "Abnehmen" ausgelegt. Zu einem
+                  späteren Zeitpunkt wird dies auch auf das Ziel "Zunehmen"
+                  angepasst. Du kannst die App aber dennoch nutzen.
+                  Kalorienempfehlungen werden auch auf das Ziel "Zunehmen"
+                  angepasst.
                 </Text>
               )}
             </View>
@@ -124,8 +179,19 @@ export default function OnboardingScreen3() {
       </ScrollView>
       <View style={styles.footerContainer}>
         <View style={styles.buttonBackground}>
-          <TouchableOpacity style={[styles.addButton, !isFormValid && { backgroundColor: theme.colors.primaryGreen20 }]} onPress={handleNext} disabled={!isFormValid}>
-            <Ionicons name="arrow-forward" size={24} color={theme.colors.white} />
+          <TouchableOpacity
+            style={[
+              styles.addButton,
+              !isFormValid && { backgroundColor: theme.colors.primaryGreen20 },
+            ]}
+            onPress={handleNext}
+            disabled={!isFormValid}
+          >
+            <Ionicons
+              name="arrow-forward"
+              size={24}
+              color={theme.colors.white}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -133,7 +199,7 @@ export default function OnboardingScreen3() {
   );
 }
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -141,15 +207,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
     backgroundColor: theme.colors.white,
   },
   progressContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   progressDot: {
     width: 10,
@@ -163,7 +229,7 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: height * 0.38,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: theme.colors.secondaryBeige20,
   },
   scrollContainer: {
@@ -198,19 +264,19 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.semiBold,
   },
   button: {
-    width: '100%',
+    width: "100%",
     paddingVertical: 15,
     paddingHorizontal: 20,
     borderColor: theme.colors.secondaryBeige100,
     borderWidth: 1,
     borderRadius: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginBottom: 10,
     backgroundColor: theme.colors.white,
   },
   buttonLabel: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.black,
     fontFamily: theme.fonts.semiBold,
   },
@@ -237,11 +303,11 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   footerContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -251,10 +317,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 0,
     right: 0,
     marginBottom: 0,
@@ -265,8 +331,8 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 60,
     height: 60,
     borderRadius: 30,

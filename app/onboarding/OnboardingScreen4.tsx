@@ -1,110 +1,119 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
-import { useRouter } from 'expo-router';
-import theme from '../../hooks/theme';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import Reanimated, { SlideInRight, SlideOutLeft } from 'react-native-reanimated';
-
+import React, { useState, useRef, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Image,
+} from "react-native";
+import theme from "../../hooks/theme";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import Reanimated, {
+  SlideInRight,
+  SlideOutLeft,
+} from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
 type Section = { subtitle?: string; text: string };
 
 const OnboardingScreen4 = () => {
-  const router = useRouter();
   const [step, setStep] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
-
+  const navigation = useNavigation<any>();
   const content: { title: string; sections: Section[]; isFinal?: boolean }[] = [
     {
-      title: 'Willst du ein Geheimnis wissen? 🤫',
+      title: "Willst du ein Geheimnis wissen? 🤫",
       sections: [
         {
-          text: 'Auch ich, war mal ein Löwe mit ein paar Extra-Kilos. Ja, du hast richtig gehört! Es gab eine Zeit, da war mein Bauch runder als meine Mähne fluffig war! 🦁🍩',
+          text: "Auch ich, war mal ein Löwe mit ein paar Extra-Kilos. Ja, du hast richtig gehört! Es gab eine Zeit, da war mein Bauch runder als meine Mähne fluffig war! 🦁🍩",
         },
         {
-          text: 'Aber dann habe ich beschlossen, etwas zu ändern. Mit viel Spaß und drei einfachen Regeln habe ich mein Wohlfühlgewicht erreicht. 💪✨',
+          text: "Aber dann habe ich beschlossen, etwas zu ändern. Mit viel Spaß und drei einfachen Regeln habe ich mein Wohlfühlgewicht erreicht. 💪✨",
         },
         {
-          text: 'Willst du wissen, welche Regeln das sind? Keine Sorge, ich werde sie dir später verraten. 😉 Bleib dran und lass uns zusammen diese Reise beginnen!',
+          text: "Willst du wissen, welche Regeln das sind? Keine Sorge, ich werde sie dir später verraten. 😉 Bleib dran und lass uns zusammen diese Reise beginnen!",
         },
       ],
     },
     {
-      title: 'Wie unterstütze ich dich? 🦁📱',
+      title: "Wie unterstütze ich dich? 🦁📱",
       sections: [
         {
-          subtitle: 'Essen 🍽️',
-          text: 'Tracke, was du isst. Gesundes Essen gibt dir Punkte, ungesundes zieht Punkte ab. Du musst dabei nicht jede einzelne Kalorie berücksichtigen. Eine gesunde Essens-Struktur ist viel wichtiger.',
+          subtitle: "Essen 🍽️",
+          text: "Tracke, was du isst. Gesundes Essen gibt dir Punkte, ungesundes zieht Punkte ab. Du musst dabei nicht jede einzelne Kalorie berücksichtigen. Eine gesunde Essens-Struktur ist viel wichtiger.",
         },
         {
-          subtitle: 'Sport 🏃‍♀️',
-          text: 'Jede Aktivität zählt! Ob Laufen, Yoga oder Tanzen – alles bringt Punkte.',
+          subtitle: "Sport 🏃‍♀️",
+          text: "Jede Aktivität zählt! Ob Laufen, Yoga oder Tanzen – alles bringt Punkte.",
         },
         {
-          subtitle: 'Challenges 🏆',
-          text: 'Schließe spannende Herausforderungen ab und sammle extra Punkte.',
+          subtitle: "Challenges 🏆",
+          text: "Schließe spannende Herausforderungen ab und sammle extra Punkte.",
         },
       ],
     },
     {
-      title: 'Level Up! 🚀',
+      title: "Level Up! 🚀",
       sections: [
         {
-          text: 'Alles, was du trackst, gibt dir Punkte oder zieht welche ab. Erreichst du bestimmte Punktestände, steigst du im Level auf. Je höher dein Level, desto mehr wirst du die positiven Veränderungen spüren und sehen!',
+          text: "Alles, was du trackst, gibt dir Punkte oder zieht welche ab. Erreichst du bestimmte Punktestände, steigst du im Level auf. Je höher dein Level, desto mehr wirst du die positiven Veränderungen spüren und sehen!",
         },
         {
-          subtitle: 'Level 1 ⭐',
-          text: 'Wir fangen an! Du machst die ersten Schritte und lernst das Prinzip kennen.',
+          subtitle: "Level 1 ⭐",
+          text: "Wir fangen an! Du machst die ersten Schritte und lernst das Prinzip kennen.",
         },
         {
-          subtitle: 'Level 2 ⭐⭐',
-          text: 'Du fühlst dich insgesamt besser und energievoller.',
+          subtitle: "Level 2 ⭐⭐",
+          text: "Du fühlst dich insgesamt besser und energievoller.",
         },
         {
-          subtitle: 'Level 3-4 ⭐⭐⭐',
-          text: 'Du siehst schon erste Veränderungen an deinem Körper.',
+          subtitle: "Level 3-4 ⭐⭐⭐",
+          text: "Du siehst schon erste Veränderungen an deinem Körper.",
         },
         {
-          subtitle: 'Level 5 ⭐⭐⭐⭐',
-          text: 'Dein Umfeld bemerkt deine Veränderung und du bekommst tolle Komplimente!',
+          subtitle: "Level 5 ⭐⭐⭐⭐",
+          text: "Dein Umfeld bemerkt deine Veränderung und du bekommst tolle Komplimente!",
         },
         {
-          subtitle: 'Level 6,7,8,... ⭐⭐⭐⭐⭐',
-          text: 'Werde zu deinem besten selbst!',
+          subtitle: "Level 6,7,8,... ⭐⭐⭐⭐⭐",
+          text: "Werde zu deinem besten selbst!",
         },
       ],
     },
     {
-      title: 'Meine goldenen Regeln 🏅',
+      title: "Meine goldenen Regeln 🏅",
       sections: [
         {
-          text: 'Wie ich dir bereits versprochen habe, verrate ich dir nun meine drei goldenen Regeln, um dein Wohlsfühlgewicht zu erreichen:',
+          text: "Wie ich dir bereits versprochen habe, verrate ich dir nun meine drei goldenen Regeln, um dein Wohlsfühlgewicht zu erreichen:",
         },
         {
-          subtitle: '1. Eine gesunde Essstruktur aufbauen 🍏',
-          text: 'Finde eine Essensroutine, die zu deinem Alltag passt. Es muss nicht kompliziert sein! Kleine, gesunde Gewohnheiten können Großes bewirken. Mit mir an deiner Seite wirst du lernen, wie du das Essen genießen und trotzdem gesund bleiben kannst.',
+          subtitle: "1. Eine gesunde Essstruktur aufbauen 🍏",
+          text: "Finde eine Essensroutine, die zu deinem Alltag passt. Es muss nicht kompliziert sein! Kleine, gesunde Gewohnheiten können Großes bewirken. Mit mir an deiner Seite wirst du lernen, wie du das Essen genießen und trotzdem gesund bleiben kannst.",
         },
         {
-          subtitle: '2. Sei dir deiner Kalorien bewusst ⚖️',
-          text: 'Keine Sorge, du musst nicht jede einzelne Kalorie akribisch zählen! Es geht nicht darum, alles perfekt zu tracken. Fünf gerade sein zu lassen, ist völlig okay. Wichtig ist, dass du ein Gefühl dafür bekommst, wie viel du zu dir nimmst und eine gesunde Struktur und Regelmäßigkeit beibehältst. Mit mir wird es kinderleicht, den Überblick zu behalten und bewusste Entscheidungen zu treffen.',
+          subtitle: "2. Sei dir deiner Kalorien bewusst ⚖️",
+          text: "Keine Sorge, du musst nicht jede einzelne Kalorie akribisch zählen! Es geht nicht darum, alles perfekt zu tracken. Fünf gerade sein zu lassen, ist völlig okay. Wichtig ist, dass du ein Gefühl dafür bekommst, wie viel du zu dir nimmst und eine gesunde Struktur und Regelmäßigkeit beibehältst. Mit mir wird es kinderleicht, den Überblick zu behalten und bewusste Entscheidungen zu treffen.",
         },
         {
-          subtitle: '3. Dran bleiben und motiviert sein 💪',
-          text: 'Kontinuität ist der Schlüssel! Es wird Tage geben, an denen es schwerfällt, aber genau da komme ich ins Spiel. Ich unterstütze dich, motiviere dich und halte dich auf Kurs. Zusammen schaffen wir das!',
+          subtitle: "3. Dran bleiben und motiviert sein 💪",
+          text: "Kontinuität ist der Schlüssel! Es wird Tage geben, an denen es schwerfällt, aber genau da komme ich ins Spiel. Ich unterstütze dich, motiviere dich und halte dich auf Kurs. Zusammen schaffen wir das!",
         },
         {
-          subtitle: 'Positive Veränderungen',
-          text: 'Wenn du diese Tipps befolgst, wirst du nicht nur dein Wohlfühlgewicht erreichen, sondern auch ein unglaubliches positives Gefühl erleben. Ein gesunder Lebensstil bringt so viel Positives in dein Leben – mehr Energie, bessere Laune und ein gesteigertes Selbstbewusstsein. Dein Umfeld wird die Veränderung sehen und du wirst stolz auf dich sein!',
+          subtitle: "Positive Veränderungen",
+          text: "Wenn du diese Tipps befolgst, wirst du nicht nur dein Wohlfühlgewicht erreichen, sondern auch ein unglaubliches positives Gefühl erleben. Ein gesunder Lebensstil bringt so viel Positives in dein Leben – mehr Energie, bessere Laune und ein gesteigertes Selbstbewusstsein. Dein Umfeld wird die Veränderung sehen und du wirst stolz auf dich sein!",
         },
       ],
     },
     {
-      title: 'Bereit? 🚀',
+      title: "Bereit? 🚀",
       sections: [
         {
-          text: 'Ich bin hier, um dich zu unterstützen und sicherzustellen, dass du dich großartig fühlst! 🦁💚 Du wirst jeden Tag eine kleine Botschaft von mir erhalten. Einen Tipp oder sonst irgendetwas interessantes, dass dir dabei hilft, dran zu bleiben.',
+          text: "Ich bin hier, um dich zu unterstützen und sicherzustellen, dass du dich großartig fühlst! 🦁💚 Du wirst jeden Tag eine kleine Botschaft von mir erhalten. Einen Tipp oder sonst irgendetwas interessantes, dass dir dabei hilft, dran zu bleiben.",
         },
         {
-          text: 'Bist du bereit diese Reise mit mir in Angriff zu nehmen? Dann lass uns gemeinsam diesen Weg gehen.',
+          text: "Bist du bereit diese Reise mit mir in Angriff zu nehmen? Dann lass uns gemeinsam diesen Weg gehen.",
         },
       ],
       isFinal: true,
@@ -116,7 +125,7 @@ const OnboardingScreen4 = () => {
       setStep(step + 1);
       scrollViewRef.current?.scrollTo({ y: 0, animated: true });
     } else {
-      router.push('/screens/dashboard');
+      navigation.navigate("Main");
     }
   };
 
@@ -141,7 +150,10 @@ const OnboardingScreen4 = () => {
           exiting={SlideOutLeft.duration(500)}
           style={styles.imageContainer}
         >
-          <Image source={require('../../assets/images/slimbavisualgym.jpg')} style={styles.image} />
+          <Image
+            source={require("../../assets/images/slimbavisualgym.jpg")}
+            style={styles.image}
+          />
         </Reanimated.View>
         <Reanimated.View
           key={`content-${step}`} // Ensure the component re-renders on step change
@@ -152,7 +164,9 @@ const OnboardingScreen4 = () => {
           <Text style={styles.title}>{content[step].title}</Text>
           {content[step].sections.map((section, index) => (
             <View key={index} style={styles.section}>
-              {section.subtitle && <Text style={styles.subtitle}>{section.subtitle}</Text>}
+              {section.subtitle && (
+                <Text style={styles.subtitle}>{section.subtitle}</Text>
+              )}
               <Text style={styles.text}>{section.text}</Text>
             </View>
           ))}
@@ -167,7 +181,11 @@ const OnboardingScreen4 = () => {
         <View style={styles.footerContainer}>
           <View style={styles.buttonBackground}>
             <TouchableOpacity style={styles.addButton} onPress={handleNext}>
-              <Ionicons name="arrow-forward" size={24} color={theme.colors.white} />
+              <Ionicons
+                name="arrow-forward"
+                size={24}
+                color={theme.colors.white}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -176,7 +194,7 @@ const OnboardingScreen4 = () => {
   );
 };
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -184,15 +202,15 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     padding: 16,
     backgroundColor: theme.colors.white,
   },
   progressContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
   },
   progressDot: {
     width: 10,
@@ -206,13 +224,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     height: height * 0.35,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: theme.colors.secondaryBeige20,
   },
   image: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -224,7 +242,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingBottom: 40,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -235,14 +253,14 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.bold,
     color: theme.colors.black,
     marginBottom: 10,
-    textAlign: 'left',
+    textAlign: "left",
   },
   subtitle: {
     fontSize: 16,
     fontFamily: theme.fonts.semiBold,
     color: theme.colors.black,
     marginBottom: 5,
-    textAlign: 'left',
+    textAlign: "left",
   },
   section: {
     marginBottom: 20,
@@ -253,14 +271,14 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.regular,
     color: theme.colors.black,
     marginBottom: 10,
-    textAlign: 'left',
+    textAlign: "left",
   },
   footerContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.1,
     shadowRadius: 3,
@@ -270,10 +288,10 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
     bottom: 0,
     right: 0,
     marginBottom: 0,
@@ -284,26 +302,26 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 60,
     height: 60,
     borderRadius: 30,
     backgroundColor: theme.colors.primaryGreen100,
   },
   ctaButton: {
-    width: '100%',
+    width: "100%",
     backgroundColor: theme.colors.primaryGreen100,
     paddingVertical: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 24,
   },
   ctaButtonText: {
     fontFamily: theme.fonts.semiBold,
     fontSize: 18,
     color: theme.colors.white,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
 
