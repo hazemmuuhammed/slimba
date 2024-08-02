@@ -13,12 +13,12 @@ import { StyleSheet, TouchableOpacity } from "react-native";
 import DashboardScreen from "./dashboard/dashboard";
 import ChallengesScreen from "./challenges/Challenges";
 import CalorieCalculatorScreen from "./calorieCalculator/calorieCalculator";
-import InboxScreen from "./InboxScreen";
-import UserProfileScreen from "./UserProfile";
+import InboxScreen from "./inbox/InboxScreen";
+import UserProfileScreen from "./profile/UserProfile";
 import CalorieOverviewScreen from "./calorieOverview/CalorieOverview";
 import EvaluationScreen from "./evaluation";
 import LevelScreen from "./Level";
-import SettingsScreen from "./settings";
+import SettingsScreen from "./settings/settings";
 import { useNavigation } from "@react-navigation/native";
 
 export type RootDrawerParamList = {
@@ -83,7 +83,9 @@ const MainDrawerNavigator: React.FC = () => {
           headerRight: () => (
             <TouchableOpacity
               style={styles.closeButton}
-              onPress={() => navigation.dispatch(DrawerActions.closeDrawer())}
+              onPress={() =>
+                navigation.dispatch(DrawerActions.jumpTo("dashboard"))
+              }
             >
               <Ionicons
                 name="close"

@@ -10,10 +10,10 @@ import {
   ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import useStore from "../../components/store"; // Importieren Sie den Store und die UserInfo-Schnittstelle
+import useStore from "../../../components/store"; // Importieren Sie den Store und die UserInfo-Schnittstelle
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import RNPickerSelect from "react-native-picker-select";
-import theme from "../../hooks/theme";
+import theme from "../../../hooks/theme";
 
 const activityLevels = [
   { label: "Sitzend", description: "wenig oder keine Bewegung", value: "1.2" },

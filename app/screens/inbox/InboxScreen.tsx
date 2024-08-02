@@ -8,8 +8,8 @@ import {
   Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useMessages, Message } from "../utility/useMessages";
-import theme from "../../hooks/theme";
+import { useMessages, Message } from "../../utility/useMessages";
+import theme from "../../../hooks/theme";
 
 const InboxScreen: React.FC = () => {
   const { messages, markMessageAsRead } = useMessages();

@@ -13,7 +13,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Asset } from "expo-asset";
 import theme from "@/hooks/theme";
-import IndexScreen from "./index";
+import IndexScreen from "./mainScreen";
 import MainDrawerNavigator from "./screens/drawerNavigator";
 // import OnboardingLayout from "./onboarding/_layout";
 import CalorieCalculator from "./screens/calorieCalculator/calorieCalculator";
@@ -25,7 +25,7 @@ import OnboardingScreen4 from "./onboarding/OnboardingScreen4";
 import OnboardingScreen5 from "./onboarding/OnboardingScreen5";
 import OnboardingScreen6 from "./onboarding/OnboardingScreen6";
 import ChallengesScreen from "./screens/challenges/Challenges";
-import InboxScreen from "./screens/InboxScreen";
+import InboxScreen from "./screens/inbox/InboxScreen";
 
 export type RootStackParamList = {
   Index: undefined;

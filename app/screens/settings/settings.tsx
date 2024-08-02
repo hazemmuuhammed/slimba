@@ -1,37 +1,44 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Modal } from 'react-native';
-import useStore from '../../components/store';
-import theme from '../../hooks/theme';
+import React, { useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity, Modal } from "react-native";
+import useStore from "../../../components/store";
+import theme from "../../../hooks/theme";
 
 const SettingsScreen: React.FC = () => {
-  const resetMealEntriesAndLevel = useStore((state) => state.resetMealEntriesAndLevel);
+  const resetMealEntriesAndLevel = useStore(
+    (state) => state.resetMealEntriesAndLevel
+  );
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
 
   const confirmResetPoints = () => {
     resetMealEntriesAndLevel();
     setModalVisible(false);
-    alert('Punktestand und Mahlzeiten wurden zurückgesetzt.');
+    alert("Punktestand und Mahlzeiten wurden zurückgesetzt.");
   };
 
   const deleteAccount = () => {
     // Hier fügst du deine Logik zum Löschen des Kontos hinzu
-    alert('Dein Konto wurde erfolgreich gelöscht.');
+    alert("Dein Konto wurde erfolgreich gelöscht.");
   };
 
   const signOut = () => {
     // Hier fügst du deine Logik zum Abmelden hinzu
-    alert('Du wurdest erfolgreich abgemeldet.');
+    alert("Du wurdest erfolgreich abgemeldet.");
   };
 
   const giveFeedback = () => {
     // Hier fügst du deine Logik für Feedback hinzu
-    alert('Danke für dein Feedback!');
+    alert("Danke für dein Feedback!");
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button} onPress={() => setModalVisible(true)}>
-        <Text style={styles.buttonText}>Punktestand und Mahlzeiten zurücksetzen</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={styles.buttonText}>
+          Punktestand und Mahlzeiten zurücksetzen
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={signOut}>
         <Text style={styles.buttonText}>Abmelden</Text>
@@ -51,12 +58,21 @@ const SettingsScreen: React.FC = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.confirmModalContent}>
-            <Text style={styles.confirmModalText}>Bist du sicher, dass du den Punktestand und die Mahlzeiten zurücksetzen willst?</Text>
+            <Text style={styles.confirmModalText}>
+              Bist du sicher, dass du den Punktestand und die Mahlzeiten
+              zurücksetzen willst?
+            </Text>
             <View style={styles.confirmButtonsContainer}>
-              <TouchableOpacity style={[styles.confirmButton, styles.confirmButtonYes]} onPress={confirmResetPoints}>
+              <TouchableOpacity
+                style={[styles.confirmButton, styles.confirmButtonYes]}
+                onPress={confirmResetPoints}
+              >
                 <Text style={styles.confirmButtonText}>Ja</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={[styles.confirmButton, styles.confirmButtonNo]} onPress={() => setModalVisible(false)}>
+              <TouchableOpacity
+                style={[styles.confirmButton, styles.confirmButtonNo]}
+                onPress={() => setModalVisible(false)}
+              >
                 <Text style={styles.confirmButtonText}>Nein</Text>
               </TouchableOpacity>
             </View>
@@ -91,31 +107,31 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
   confirmModalContent: {
-    width: '80%',
+    width: "80%",
     backgroundColor: theme.colors.white,
     padding: 20,
     borderRadius: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   confirmModalText: {
     fontSize: 18,
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
     fontFamily: theme.fonts.regular,
   },
   confirmButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
   confirmButton: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 10,
     borderRadius: 10,
     marginHorizontal: 5,
@@ -129,7 +145,7 @@ const styles = StyleSheet.create({
   confirmButtonText: {
     color: theme.colors.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontFamily: theme.fonts.bold,
   },
 });
